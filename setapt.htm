@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Welcome to Leadership Coaching</title>
+</head>
+<body>
+    <header id="header">Welcome to Leadership Coaching</header>
+    <section id="section">This is the page to sign up for Leadership Coaching.</section>
+    <p id="error"></p>
+    
+        <table id="eventTable">
+            <tr id="coachSessions">
+            </tr>
+        </table>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+        var socket = io();
+
+
+        //simple Javascript function to get the value of a cookie with the given argument cname.
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1);
+                if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+            }
+            return "";
+        }
+
+
+
+        //on connect, client will echo to the server the email and token of the user.
+        socket.on('connect', function () {
+
+            var tempEmail = getCookie('leaddev-email');
+            var tempToken = getCookie('leaddev-token');
+
+                socket.emit('adduser', tempEmail,tempToken);
+        });
+
+        //listener function for when the server obtains an error getting calendar results.
+        socket.on('error', function (error) {
+            document.getElementById('error').innerHTML = error;
+        });
+
+        socket.on('addEvent', function (stringDate,finalTime, email) {
+            if (email == "warfel@ohio.edu") {
+                $("tr").append('<td>Regina Warfel</td>');
+                $("tr").append('<td>' + stringDate + ', '+finalTime+'</td>');
+            }
+            else if (email == "em322609@ohio.edu") {
+                $("tr").append('<td>Erik May</td>');
+                $("tr").append('<td>' + stringDate + ', ' + finalTime + '</td>');
+            }
+
+        });
+        
+    </script>
+</body>
+</html>
