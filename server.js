@@ -1,4 +1,5 @@
 ﻿
+
 var http = require('http');
 var express = require('express');
 var authHelper = require('./authHelper.js');
@@ -15,7 +16,7 @@ var server = http.createServer(app);
 
 app.use(express.static(__dirname));
 
-server.listen(5000);
+server.listen(3000);
 var io = require('socket.io').listen(server);
 var usernames = {};
 var tokens = {};
@@ -104,6 +105,9 @@ app.get('/setapt', function (req, res) {
                                 intHour -= 12;
                                 finalTime = "" + intHour + ":" + mins + " PM";
                             }
+                            else if (intHour == 12)
+                                finalTime = "" + intHour + ":" + mins + " PM";
+                            
                             
                             
                             var newDate = new Date(year, month, day);
@@ -120,23 +124,14 @@ app.get('/setapt', function (req, res) {
             
             });
         });
+        socket.on('createEvent', function (email,date,time) {
+            var name = email;    
+
+
+        });
     });
 });
 
-
-
-
-/*app.get('/dbtest', function (request, response) {
-    mongoose.model('Ohio University Outlook Emails', studentEmailSchema).find(function (err, email) {
-        response.send(email);
-    });
-});*/
-
-
-/*var studentEmailSchema = mongoose.Schema({
-    Email : String,
-    access_token : String
-});*/
 
 function tokenReceived(response, error, token) {
     if (error) {
@@ -150,16 +145,6 @@ function tokenReceived(response, error, token) {
            'leaddev-email=' + authHelper.getEmailFromIdToken(token.token.id_token) + ';Max-Age=3600'];
         response.setHeader('Set-Cookie', cookies);
         
-        
-        //var loginCredentials = mongoose.model('Ohio University Outlook Emails', studentEmailSchema);
-        //var user = new loginCredentials({ Email : '' + authHelper.getEmailFromIdToken(token.token.id_token), access_token : ''+token.token.access_token });
-        
-
-        /*user.save(function (err) {
-            if (err) {
-                console.log('there was an error saving outlook account to mongo db');
-            }
-        });*/
         
         
         response.redirect('/setapt');

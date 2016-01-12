@@ -8,6 +8,7 @@
     "email": "em322609@ohio.edu"
   },
   "dependencies": {
+    "bootstrap": "^3.3.6",
     "express": "^4.13.3",
     "mongodb": "^2.0.48",
     "mongoose": "^4.2.6",

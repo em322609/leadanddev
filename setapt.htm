@@ -3,24 +3,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
+
     <title>Welcome to Leadership Coaching</title>
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <header id="header">Welcome to Leadership Coaching</header>
     <section id="section">This is the page to sign up for Leadership Coaching.</section>
     <p id="error"></p>
     
-        <table id="eventTable">
-            <tr id="coachSessions">
+        <table class="table" id="eventTable">
+            <tr class="active" id="coachSessions">
             </tr>
         </table>
+    <p id="confirm"></p>
     
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-
+        
         var socket = io();
-
+        var time;
+        var date;
 
         //simple Javascript function to get the value of a cookie with the given argument cname.
         function getCookie(cname) {
@@ -51,16 +56,27 @@
         });
 
         socket.on('addEvent', function (stringDate,finalTime, email) {
+            date = stringDate;
+            time = finalTime;
+
             if (email == "warfel@ohio.edu") {
-                $("tr").append('<td>Regina Warfel</td>');
-                $("tr").append('<td>' + stringDate + ', '+finalTime+'</td>');
+                $("table").append('<tr class="active"><td>Regina Warfel</td><td>' + stringDate + ', ' + finalTime + '</td></tr>');
             }
             else if (email == "em322609@ohio.edu") {
-                $("tr").append('<td>Erik May</td>');
-                $("tr").append('<td>' + stringDate + ', ' + finalTime + '</td>');
+                $("table").append('<tr id="apptRow" class="active"><td>Erik May</td><td>'+stringDate+', <a role="button" onclick="confirmTimeHTML()">'+finalTime + '</a></td></tr>');
             }
 
         });
+
+        function confirmTimeHTML() {
+            $("#confirm").replaceWith('<p id="confirm">Do you wish to create an appointment for this time? <button id="confirmButton" type="button" class="btn btn-default">Confirm</button></p>');
+            $("#confirmButton").click(function () {
+                $("#apptRow").remove();
+                $("#confirm").remove();
+                socket.emit('createEvent', getCookie('leaddev-email'), date, time);
+            });
+        }
+
         
     </script>
 </body>

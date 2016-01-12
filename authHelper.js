@@ -7,7 +7,7 @@
 }
 var oauth2 = require("simple-oauth2")(credentials);
 
-var redirectUri = "http://localhost:5000/authorize";
+var redirectUri = "http://localhost:3000/authorize";
 
 // The scopes the app requires
 var scopes = ["openid",
@@ -16,7 +16,7 @@ var scopes = ["openid",
 
 function getAuthUrl() {
     var returnVal = oauth2.authCode.authorizeURL({
-        redirect_uri: "http://localhost:5000/authorize",
+        redirect_uri: "http://localhost:3000/authorize",
         scope: scopes.join(" ")
     });
     console.log("Generated auth url: " + returnVal);
