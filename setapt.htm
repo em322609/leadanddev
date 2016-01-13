@@ -60,7 +60,7 @@
             time = finalTime;
 
             if (email == "warfel@ohio.edu") {
-                $("table").append('<tr class="active"><td>Regina Warfel</td><td>' + stringDate + ', ' + finalTime + '</td></tr>');
+                $("table").append('<tr id="apptRow" class="active"><td>Regina Warfel</td><td>' + stringDate + ', <a role="button" onclick="confirmTimeHTML()">' + finalTime + '</a></td></tr>');
             }
             else if (email == "em322609@ohio.edu") {
                 $("table").append('<tr id="apptRow" class="active"><td>Erik May</td><td>'+stringDate+', <a role="button" onclick="confirmTimeHTML()">'+finalTime + '</a></td></tr>');

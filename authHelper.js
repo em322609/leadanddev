@@ -1,13 +1,13 @@
 ﻿var credentials = {
-    clientID: "ba43917e-a869-4030-a866-2ee270824c13",
-    clientSecret: "4ow76941dqKggGzdZFdn3mb",
+    clientID: "61f44352-50c2-4936-a7e5-da266fd162f2",
+    clientSecret: "KcBPqaMqDjqB7FiFZqxjO4U",
     site: "https://login.microsoftonline.com/common",
     authorizationPath: "/oauth2/v2.0/authorize",
     tokenPath: "/oauth2/v2.0/token"
 }
 var oauth2 = require("simple-oauth2")(credentials);
 
-var redirectUri = "http://localhost:3000/authorize";
+var redirectUri = "http://localhost:" + (process.env.PORT || 3000) + "/authorize";
 
 // The scopes the app requires
 var scopes = ["openid",
@@ -16,7 +16,7 @@ var scopes = ["openid",
 
 function getAuthUrl() {
     var returnVal = oauth2.authCode.authorizeURL({
-        redirect_uri: "http://localhost:3000/authorize",
+        redirect_uri: "http://localhost:"+(process.env.PORT||3000)+"/authorize",
         scope: scopes.join(" ")
     });
     console.log("Generated auth url: " + returnVal);
